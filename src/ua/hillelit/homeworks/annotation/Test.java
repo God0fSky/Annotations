@@ -9,7 +9,7 @@ import java.lang.reflect.Type;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Test {
-    int value() default 0;
+    int priority() default 0;
 
 
 }

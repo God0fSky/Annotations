@@ -11,12 +11,12 @@ public class Test1 {
         System.out.println("Hi, im BeforeSuite1");
     }
 
-    @Test(2)
+    @Test(priority = 1)
     public static void doTest1() {
         System.out.println("Hi, im Test1");
     }
 
-    @Test(1)
+    @Test(priority = 2)
     public static void finishTest1() {
         System.out.println("Hi, im finishTest1");
     }

@@ -9,6 +9,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class TestRunner {
 
@@ -18,7 +21,7 @@ public class TestRunner {
         isValidAfterSuite(clazz);
 
         checkAnnotation(clazz, BeforeSuite.class.getName());
-        checkAnnotation(clazz, Test.class.getName());
+        checkAnnotationPriority(clazz, Test.class.getName());
         checkAnnotation(clazz, AfterSuite.class.getName());
 
     }
@@ -33,18 +36,19 @@ public class TestRunner {
         }
     }
 
-    /*private static boolean checkAnnotationPriority(Class clazz, String annotationName) {
+    private static void checkAnnotationPriority(Class clazz, String annotationName) {
+        Map<Integer, Method> methods = new TreeMap<>(Comparator.naturalOrder());
         for (Method method : clazz.getMethods()) {
             for (Annotation annotation : method.getAnnotations()) {
                 if (checkAnnotationName(annotation, annotationName)) {
-                    //System.out.println(annotation.annotationType().getAnnotation(Test.class).value());
-                    System.out.println(annotation);
-                    clazz.getDeclaredMethod().getAnnotation().annotationType()
+                    methods.put(method.getAnnotation(Test.class).priority(), method);
                 }
             }
         }
-        return true;
-    }*/
+        methods.values().forEach(method -> invokeMethod(method, clazz));
+    }
+
+
 
     private static boolean checkAnnotationName(Annotation an, String checkAn) {
         if (an.annotationType().getName().equals(checkAn)) {
